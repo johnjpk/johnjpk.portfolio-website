@@ -1,211 +1,820 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-    
- 
-</head>
-<body>
-    
-<!--header section starts-->
+<!doctype html>
+<!--
+  John James - Personal Portfolio
+  Tech: HTML + Tailwind CSS (CDN) only
+  Runs directly on GitHub Pages by opening index.html
+-->
+<html lang="en" class="h-full scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="John James - Frontend & Full-Stack Developer in Dar es Salaam, Tanzania. Portfolio, projects, skills, services, and contact."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>John James | Developer Portfolio</title>
 
+    <!-- Theme init (runs early to avoid flash) -->
+    <script>
+      (() => {
+        const prefersDark =
+          window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        let theme = prefersDark ? "dark" : "light";
+        try {
+          const stored = localStorage.getItem("theme");
+          if (stored) theme = stored;
+        } catch (e) {}
+        document.documentElement.classList.toggle("dark", theme === "dark");
+      })();
+    </script>
 
-<header class="header fixed top" >
+    <!-- Tailwind CSS via CDN (no build tools) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Tailwind Play CDN config
+      // Note: the Play CDN initializes `window.tailwind`, so set config after loading it.
+      window.tailwind = window.tailwind || {};
+      window.tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            boxShadow: {
+              glow: "0 0 0 1px rgba(99,102,241,.2), 0 10px 30px rgba(2,6,23,.15)",
+            },
+          },
+        },
+      };
+    </script>
 
-<a href="#" class="logo"><h1>portfo<span>lio</span></h1></a>
+    <style>
+      /* Small enhancements without a build step */
+      :focus-visible {
+        outline: 2px solid rgb(99 102 241);
+        outline-offset: 3px;
+      }
 
-<nav>
-  <ul class="sidebar">
-    <li onclick=hideSidebar()><a href="#contact"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg></a></li>
-    <li><a href="#about">about</a></li>
-    <li><a href="#experience">experience</a></li>
-    <li><a href="#service">service</a></li> 
-    <li><a href="#contact">contact</a></li>
-  </ul>
-  <ul>
-    <li class="hideOnMobile"><a href="#about">about</a></li>
-    <li class="hideOnMobile"><a href="#experience">experience</a></li>
-    <li class="hideOnMobile"><a href="#service">service</a></li> 
-    <li class="hideOnMobile"><a href="#contact">contact</a></li>
-    <li class="menu" onclick=showSidebar()><a href="#contact"><svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 -960 960 960" width="32"><path d="M144-264v-72h240v72H144Zm0-180v-72h432v72H144Zm0-180v-72h672v72H144Z"/></svg></a></li>
-  </ul>
-  
-</nav>
-</header>
+      @media (prefers-reduced-motion: reduce) {
+        html.scroll-smooth {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+  </head>
 
-    <!--header section end-->
+  <body class="h-full bg-white text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
+    <!-- Skip link for accessibility -->
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-slate-900 focus:shadow"
+      >Skip to content</a
+    >
 
-    <!--home section start--> 
+    <!-- Sticky Navbar -->
+    <header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur dark:border-white/10 dark:bg-slate-950/80">
+      <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
+        <!-- Brand -->
+        <a href="#home" class="group inline-flex items-center gap-2">
+          <span
+            class="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-sky-500 shadow-glow"
+            aria-hidden="true"
+            >JJ</span
+          >
+          <span class="text-sm font-semibold tracking-wide text-slate-900 dark:text-white"
+            >John James</span
+          >
+        </a>
 
+        <!-- Desktop links -->
+        <div class="hidden items-center gap-3 md:flex">
+          <a class="text-sm text-slate-600 hover:text-slate-900 transition dark:text-slate-300 dark:hover:text-white" href="#about">About</a>
+          <a class="text-sm text-slate-600 hover:text-slate-900 transition dark:text-slate-300 dark:hover:text-white" href="#skills">Skills</a>
+          <a class="text-sm text-slate-600 hover:text-slate-900 transition dark:text-slate-300 dark:hover:text-white" href="#education">Education</a>
+          <a class="text-sm text-slate-600 hover:text-slate-900 transition dark:text-slate-300 dark:hover:text-white" href="#projects">Projects</a>
+          <a class="text-sm text-slate-600 hover:text-slate-900 transition dark:text-slate-300 dark:hover:text-white" href="#services">Services</a>
+          <a class="text-sm text-slate-600 hover:text-slate-900 transition dark:text-slate-300 dark:hover:text-white" href="#contact">Contact</a>
 
-<div class="row align-items-center min-vh-100 min-vw-100">
+          <!-- Theme toggle -->
+          <button
+            id="themeToggle"
+            type="button"
+            class="inline-flex items-center justify-center rounded-xl border border-slate-200/70 bg-white px-3 py-2 text-slate-700 shadow-sm hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10"
+            aria-label="Toggle dark mode"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 dark:hidden" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8 8 0 1010.586 10.586z" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="hidden h-5 w-5 dark:block" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M10 2a.75.75 0 01.75.75V4a.75.75 0 01-1.5 0V2.75A.75.75 0 0110 2zm0 14a.75.75 0 01.75.75V18a.75.75 0 01-1.5 0v-1.25A.75.75 0 0110 16zm8-6a.75.75 0 01-.75.75H16a.75.75 0 010-1.5h1.25A.75.75 0 0118 10zM4 10a.75.75 0 01-.75.75H2a.75.75 0 010-1.5h1.25A.75.75 0 014 10zm11.657-5.657a.75.75 0 010 1.06l-.884.884a.75.75 0 11-1.06-1.06l.884-.884a.75.75 0 011.06 0zM6.347 13.653a.75.75 0 010 1.06l-.884.884a.75.75 0 11-1.06-1.06l.884-.884a.75.75 0 011.06 0zm8.426 1.944a.75.75 0 01-1.06 0l-.884-.884a.75.75 0 111.06-1.06l.884.884a.75.75 0 010 1.06zM6.347 6.347a.75.75 0 01-1.06 0l-.884-.884a.75.75 0 111.06-1.06l.884.884a.75.75 0 010 1.06z" clip-rule="evenodd" />
+              <path d="M10 6.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7z" />
+            </svg>
+          </button>
 
-<div class="intro">
-  <h2>hellow, my name is <span class="name">john james</span></h2>
-  <h1>i am a software developer</h1>
- 
-</div>
+          <a
+            class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition shadow dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
+            href="#projects"
+            >View Work</a
+          >
+        </div>
 
+        <!-- Mobile menu button -->
+        <div class="flex items-center gap-2 md:hidden">
+          <button
+            id="themeToggleMobile"
+            type="button"
+            class="inline-flex items-center justify-center rounded-xl border border-slate-200/70 bg-white p-2 text-slate-700 shadow-sm hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10"
+            aria-label="Toggle dark mode"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 dark:hidden" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8 8 0 1010.586 10.586z" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6 dark:block" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M10 2a.75.75 0 01.75.75V4a.75.75 0 01-1.5 0V2.75A.75.75 0 0110 2zm0 14a.75.75 0 01.75.75V18a.75.75 0 01-1.5 0v-1.25A.75.75 0 0110 16zm8-6a.75.75 0 01-.75.75H16a.75.75 0 010-1.5h1.25A.75.75 0 0118 10zM4 10a.75.75 0 01-.75.75H2a.75.75 0 010-1.5h1.25A.75.75 0 014 10zm11.657-5.657a.75.75 0 010 1.06l-.884.884a.75.75 0 11-1.06-1.06l.884-.884a.75.75 0 011.06 0zM6.347 13.653a.75.75 0 010 1.06l-.884.884a.75.75 0 11-1.06-1.06l.884-.884a.75.75 0 011.06 0zm8.426 1.944a.75.75 0 01-1.06 0l-.884-.884a.75.75 0 111.06-1.06l.884.884a.75.75 0 010 1.06zM6.347 6.347a.75.75 0 01-1.06 0l-.884-.884a.75.75 0 111.06-1.06l.884.884a.75.75 0 010 1.06z" clip-rule="evenodd" />
+              <path d="M10 6.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7z" />
+            </svg>
+          </button>
 
-</div>
+          <button
+            id="menuButton"
+            type="button"
+            class="inline-flex items-center justify-center rounded-xl border border-slate-200/70 bg-white p-2 text-slate-700 shadow-sm hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10"
+            aria-controls="mobileMenu"
+            aria-expanded="false"
+            aria-label="Open menu"
+          >
+            <!-- Hamburger icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </nav>
 
-<!--about section start -->
-
-<section  class="about"  id="about">
-  <div class="main">
-    <div class=""><img src="IMG-20241202-WA0005.jpg" alt=""></div>
-
-    <div class="about-text">
-      <h2>about me</h2>
-      <h5>developer <span class="d">& </span>designer</h5>
-      <p>I am front-end developer. I can provide clean code and pixel
-        perfect design. I also make the website more & more interactive with
-        web animations. I can provide clean code and pixel
-        perfect design. A responsive design makes your website accessible to all
-        users,regardless of other device,,,I am front-end developer. I can provide clean code and pixel
-        perfect design. I also make the website more & more interactive with
-        web animations. I can provide clean code and pixel
-        perfect design. A responsive design makes your website accessible to all
-        users,regardless of other device
-      </p>
-      <a href="https://wa.me/255686642920"><button>let's talk</button></a>
-
-
-    <div class="skil" id="experience"><h2>my skills</h2>
-
-      <div class="skill-bar">
-        <h5>html <span class="P">95%</span></h5>
-        <div class="bar bar1"><span class="fill"></span></div>
+      <!-- Mobile menu -->
+      <div id="mobileMenu" class="hidden border-t border-slate-200/70 bg-white dark:border-white/10 dark:bg-slate-950 md:hidden">
+        <div class="mx-auto max-w-6xl px-4 py-3 sm:px-6">
+          <div class="grid gap-2">
+            <a class="rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white" href="#about">About</a>
+            <a class="rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white" href="#skills">Skills</a>
+            <a class="rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white" href="#education">Education</a>
+            <a class="rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white" href="#projects">Projects</a>
+            <a class="rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white" href="#services">Services</a>
+            <a class="rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white" href="#contact">Contact</a>
+          </div>
+        </div>
       </div>
+    </header>
 
-      <div class="skill-bar">
-        <h5>css <span class="p">85%</span></h5>
-        <div class="bar bar2"><span class="fill"></span></div>
+    <main id="main">
+      <!-- Hero -->
+      <section id="home" class="relative overflow-hidden">
+        <!-- Background glow -->
+        <div class="pointer-events-none absolute inset-0 -z-10">
+          <div class="absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-indigo-500/25 blur-3xl"></div>
+          <div class="absolute -bottom-20 right-0 h-72 w-72 rounded-full bg-sky-500/20 blur-3xl"></div>
+        </div>
+
+        <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
+          <div class="grid items-center gap-10 lg:grid-cols-2">
+            <!-- Copy -->
+            <div>
+              <p class="inline-flex items-center gap-2 rounded-full border border-slate-200/70 bg-slate-50 px-3 py-1 text-xs text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-200">
+                <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+                Available for freelance & full-time roles
+              </p>
+
+              <h1 class="mt-5 text-4xl font-bold leading-tight tracking-tight text-slate-900 dark:text-white sm:text-5xl">
+                John James
+              </h1>
+
+              <p class="mt-3 text-lg text-slate-600 dark:text-slate-300 sm:text-xl">
+                Frontend & Full-Stack Developer
+              </p>
+
+              <p class="mt-5 max-w-xl text-slate-600 dark:text-slate-300">
+                I build clean, responsive, user-friendly web applications &mdash; from polished interfaces to reliable
+                database-backed systems. Based in Dar es Salaam, Tanzania.
+              </p>
+
+              <div class="mt-8 flex flex-wrap gap-3">
+                <a
+                  href="#projects"
+                  class="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-indigo-500 to-sky-500 px-5 py-3 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition"
+                  >View Projects</a
+                >
+                <a
+                  href="#contact"
+                  class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-50 transition dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+                  >Contact Me</a
+                >
+              </div>
+
+              <div class="mt-8 grid gap-3 sm:grid-cols-3">
+                <div class="rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/5">
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Location</p>
+                  <p class="mt-1 text-sm font-semibold text-slate-900 dark:text-white">Dar es Salaam, Tanzania</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/5">
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Email</p>
+                  <a class="mt-1 block text-sm font-semibold text-slate-900 hover:text-sky-600 transition dark:text-white dark:hover:text-sky-300" href="mailto:johnjpk0111@gmail.com"
+                    >johnjpk0111@gmail.com</a
+                  >
+                </div>
+                <div class="rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/5">
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Phone</p>
+                  <a class="mt-1 block text-sm font-semibold text-slate-900 hover:text-sky-600 transition dark:text-white dark:hover:text-sky-300" href="tel:+255686642920"
+                    >0686642920</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Hero card -->
+            <div class="relative">
+              <div class="rounded-3xl border border-slate-200/70 bg-gradient-to-b from-white to-slate-50 p-6 shadow-glow dark:border-white/10 dark:from-white/10 dark:to-white/5">
+                <div class="flex items-center gap-4">
+                  <div class="relative">
+                    <img
+                      src="assets/profile.jpg"
+                      alt="John James"
+                      class="h-14 w-14 rounded-2xl object-cover shadow ring-1 ring-slate-900/10 dark:ring-white/20"
+                      loading="eager"
+                      decoding="async"
+                    />
+                  </div>
+                  <div>
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white">What I do</p>
+                    <p class="text-sm text-slate-600 dark:text-slate-300">Modern web apps, responsive UI, REST APIs, and databases</p>
+                  </div>
+                </div>
+
+                <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                  <div class="rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-slate-950/40">
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Primary focus</p>
+                    <p class="mt-1 text-sm font-semibold text-slate-900 dark:text-white">Frontend Engineering</p>
+                    <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Tailwind, React, accessibility, performance</p>
+                  </div>
+                  <div class="rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-slate-950/40">
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Also strong in</p>
+                    <p class="mt-1 text-sm font-semibold text-slate-900 dark:text-white">Full-Stack Delivery</p>
+                    <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">SQL, Python, APIs, database design</p>
+                  </div>
+                </div>
+
+                <div class="mt-6 rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-slate-950/40">
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Education</p>
+                  <p class="mt-1 text-sm font-semibold text-slate-900 dark:text-white">University of Dar es Salaam (UDSM)</p>
+                  <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Committed to continuous learning and real-world problem solving.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section id="about" class="scroll-mt-24 border-t border-slate-200/70 dark:border-white/10">
+        <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
+          <div class="grid gap-10 lg:grid-cols-3">
+            <div>
+              <h2 class="text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">About</h2>
+              <p class="mt-3 text-slate-600 dark:text-slate-300">
+                I'm John James, a developer passionate about building clean, responsive, and user-friendly web applications.
+              </p>
+            </div>
+            <div class="lg:col-span-2">
+              <div class="rounded-3xl border border-slate-200/70 bg-white p-6 shadow dark:border-white/10 dark:bg-white/5">
+                <p class="text-slate-600 dark:text-slate-300">
+                  I enjoy turning ideas into well-crafted digital experiences &mdash; whether it's a landing page, a dashboard, or a
+                  database-backed system. My approach focuses on clarity, performance, accessibility, and maintainable code.
+                </p>
+                <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                  <div class="rounded-2xl border border-slate-200/70 bg-slate-50 p-5 shadow-sm dark:border-white/10 dark:bg-slate-950/40">
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white">Strengths</p>
+                    <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                      <li>Responsive design and modern UI</li>
+                      <li>REST APIs and frontend integration</li>
+                      <li>Database design and SQL querying</li>
+                      <li>Problem solving and clean architecture</li>
+                    </ul>
+                  </div>
+                  <div class="rounded-2xl border border-slate-200/70 bg-slate-50 p-5 shadow-sm dark:border-white/10 dark:bg-slate-950/40">
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white">Tools & workflow</p>
+                    <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                      <li>Git & GitHub collaboration</li>
+                      <li>Component-driven development</li>
+                      <li>Reusable UI patterns</li>
+                      <li>Testing mindset and debugging</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="mt-6 flex flex-wrap gap-3">
+                  <a
+                    class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 transition shadow dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
+                    href="#contact"
+                    >Let's work together</a
+                  >
+                  <a
+                    class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-50 transition dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+                    href="#skills"
+                    >View skills</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section id="skills" class="scroll-mt-24 border-t border-slate-200/70 dark:border-white/10">
+        <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 class="text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">Skills</h2>
+              <p class="mt-2 text-slate-600 dark:text-slate-300">A practical mix of frontend, backend, and product skills.</p>
+            </div>
+            <p class="text-sm text-slate-500 dark:text-slate-400">Always learning, always improving.</p>
+          </div>
+
+          <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <!-- Skill card template -->
+            <div class="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10">
+              <p class="text-sm font-semibold text-slate-900 dark:text-white">Frontend</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-700 ring-1 ring-indigo-500/20 dark:bg-indigo-500/15 dark:text-indigo-200 dark:ring-indigo-500/25">HTML</span>
+                <span class="rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-700 ring-1 ring-indigo-500/20 dark:bg-indigo-500/15 dark:text-indigo-200 dark:ring-indigo-500/25">CSS</span>
+                <span class="rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-700 ring-1 ring-indigo-500/20 dark:bg-indigo-500/15 dark:text-indigo-200 dark:ring-indigo-500/25">JavaScript</span>
+                <span class="rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-700 ring-1 ring-indigo-500/20 dark:bg-indigo-500/15 dark:text-indigo-200 dark:ring-indigo-500/25">React</span>
+                <span class="rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-700 ring-1 ring-indigo-500/20 dark:bg-indigo-500/15 dark:text-indigo-200 dark:ring-indigo-500/25">Responsive Design</span>
+                <span class="rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-700 ring-1 ring-indigo-500/20 dark:bg-indigo-500/15 dark:text-indigo-200 dark:ring-indigo-500/25">UI Design</span>
+              </div>
+            </div>
+
+            <div class="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10">
+              <p class="text-sm font-semibold text-slate-900 dark:text-white">Backend & Data</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="rounded-full bg-sky-500/10 px-3 py-1 text-xs font-medium text-sky-700 ring-1 ring-sky-500/20 dark:bg-sky-500/15 dark:text-sky-200 dark:ring-sky-500/25">SQL</span>
+                <span class="rounded-full bg-sky-500/10 px-3 py-1 text-xs font-medium text-sky-700 ring-1 ring-sky-500/20 dark:bg-sky-500/15 dark:text-sky-200 dark:ring-sky-500/25">Python</span>
+                <span class="rounded-full bg-sky-500/10 px-3 py-1 text-xs font-medium text-sky-700 ring-1 ring-sky-500/20 dark:bg-sky-500/15 dark:text-sky-200 dark:ring-sky-500/25">REST APIs</span>
+                <span class="rounded-full bg-sky-500/10 px-3 py-1 text-xs font-medium text-sky-700 ring-1 ring-sky-500/20 dark:bg-sky-500/15 dark:text-sky-200 dark:ring-sky-500/25">Database Design</span>
+                <span class="rounded-full bg-sky-500/10 px-3 py-1 text-xs font-medium text-sky-700 ring-1 ring-sky-500/20 dark:bg-sky-500/15 dark:text-sky-200 dark:ring-sky-500/25">CRUD Systems</span>
+              </div>
+            </div>
+
+            <div class="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10">
+              <p class="text-sm font-semibold text-slate-900 dark:text-white">Professional</p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-500/20 dark:bg-emerald-500/15 dark:text-emerald-200 dark:ring-emerald-500/25">Git</span>
+                <span class="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-500/20 dark:bg-emerald-500/15 dark:text-emerald-200 dark:ring-emerald-500/25">GitHub</span>
+                <span class="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-500/20 dark:bg-emerald-500/15 dark:text-emerald-200 dark:ring-emerald-500/25">Problem Solving</span>
+                <span class="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-500/20 dark:bg-emerald-500/15 dark:text-emerald-200 dark:ring-emerald-500/25">Communication</span>
+                <span class="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-500/20 dark:bg-emerald-500/15 dark:text-emerald-200 dark:ring-emerald-500/25">Team Collaboration</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Education -->
+      <section id="education" class="scroll-mt-24 border-t border-slate-200/70 dark:border-white/10">
+        <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
+          <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 class="text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">Education</h2>
+              <p class="mt-2 text-slate-600 dark:text-slate-300">Academic foundation with a focus on practical outcomes.</p>
+            </div>
+          </div>
+
+          <div class="mt-8">
+            <div class="relative rounded-3xl border border-slate-200/70 bg-white p-6 shadow dark:border-white/10 dark:bg-white/5">
+              <div class="absolute left-6 top-6 h-3 w-3 rounded-full bg-indigo-400"></div>
+              <div class="pl-8">
+                <p class="text-sm text-slate-500 dark:text-slate-400">University</p>
+                <p class="mt-1 text-lg font-semibold text-slate-900 dark:text-white">University of Dar es Salaam (UDSM)</p>
+                <p class="mt-2 text-slate-600 dark:text-slate-300">
+                  Studied at UDSM, strengthening problem-solving, software development fundamentals, and real-world project
+                  delivery.
+                </p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-300">Team projects</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-300">Database systems</span>
+                  <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-300">Web development</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects" class="scroll-mt-24 border-t border-slate-200/70 dark:border-white/10">
+        <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 class="text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">Projects</h2>
+              <p class="mt-2 text-slate-600 dark:text-slate-300">A few realistic examples of what I can build.</p>
+            </div>
+            <a class="text-sm font-semibold text-sky-700 hover:text-sky-800 transition dark:text-sky-300 dark:hover:text-sky-200" href="#contact"
+              >Need something similar? Contact me &rarr;</a
+            >
+          </div>
+
+          <div class="mt-8 grid gap-6 lg:grid-cols-3">
+            <!-- Project 1 -->
+            <article class="group rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10">
+              <div class="aspect-[16/9] overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 dark:border-white/10 dark:bg-slate-950/40">
+                <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-indigo-500/20 to-sky-500/20 dark:from-indigo-500/15 dark:to-sky-500/15">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-slate-700 dark:text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10M4 18h14" />
+                  </svg>
+                </div>
+              </div>
+              <div class="mt-5 flex items-start justify-between gap-3">
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Student Management System</h3>
+                <span class="rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-700 ring-1 ring-indigo-500/20 dark:bg-indigo-500/15 dark:text-indigo-200 dark:ring-indigo-500/25"
+                  >CRUD</span
+                >
+              </div>
+              <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+                A database-backed system to manage student records, courses, grades, and basic reporting with role-based
+                access patterns.
+              </p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-300">React</span>
+                <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-300">REST API</span>
+                <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-300">SQL</span>
+                <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-300">Python</span>
+              </div>
+              <div class="mt-6 flex flex-wrap gap-3">
+                <a
+                  href="http://102.223.8.79:1980/tcms-web"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
+                  >Live Demo</a
+                >
+                <a
+                  href="https://github.com/johnjpk"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50 transition dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+                  >GitHub</a
+                >
+              </div>
+            </article>
+
+            <!-- Project 2 -->
+            <article class="group rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10">
+              <div class="aspect-[16/9] overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 dark:border-white/10 dark:bg-slate-950/40">
+                <img
+                  src="assets/project-business.webp"
+                  alt="Business Portfolio Website preview"
+                  class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="mt-5 flex items-start justify-between gap-3">
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Business Portfolio Website</h3>
+                <span class="rounded-full bg-sky-500/10 px-3 py-1 text-xs font-medium text-sky-700 ring-1 ring-sky-500/20 dark:bg-sky-500/15 dark:text-sky-200 dark:ring-sky-500/25"
+                  >UI</span
+                >
+              </div>
+              <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+                A fast, responsive marketing website with modern sections, strong typography, and SEO-ready structure.
+              </p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-300">HTML</span>
+                <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-300">Tailwind CSS</span>
+                <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-300">JavaScript</span>
+              </div>
+              <div class="mt-6 flex flex-wrap gap-3">
+                <a
+                  href="https://example.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
+                  >Live Demo</a
+                >
+                <a
+                  href="https://github.com/johnjpk"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50 transition dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+                  >GitHub</a
+                >
+              </div>
+            </article>
+
+            <!-- Project 3 -->
+            <article class="group rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10">
+              <div class="aspect-[16/9] overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 dark:border-white/10 dark:bg-slate-950/40">
+                <img
+                  src="assets/project-inventory.webp"
+                  alt="Inventory Management Dashboard preview"
+                  class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="mt-5 flex items-start justify-between gap-3">
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Inventory Management Dashboard</h3>
+                <span class="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-700 ring-1 ring-emerald-500/20 dark:bg-emerald-500/15 dark:text-emerald-200 dark:ring-emerald-500/25"
+                  >Dashboard</span
+                >
+              </div>
+              <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+                A dashboard for tracking products, stock movement, and sales insights with searchable tables and clean data
+                visual hierarchy.
+              </p>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-300">React</span>
+                <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-300">SQL</span>
+                <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-300">REST APIs</span>
+                <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-300">UI Design</span>
+              </div>
+              <div class="mt-6 flex flex-wrap gap-3">
+                <a
+                  href="https://example.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
+                  >Live Demo</a
+                >
+                <a
+                  href="https://github.com/johnjpk"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50 transition dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+                  >GitHub</a
+                >
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services -->
+      <section id="services" class="scroll-mt-24 border-t border-slate-200/70 dark:border-white/10">
+        <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 class="text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">Services</h2>
+              <p class="mt-2 text-slate-600 dark:text-slate-300">What I can deliver for you or your business.</p>
+            </div>
+          </div>
+
+          <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10">
+              <p class="text-sm font-semibold text-slate-900 dark:text-white">Website Development</p>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Modern, responsive websites with clean structure and strong UX.</p>
+            </div>
+            <div class="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10">
+              <p class="text-sm font-semibold text-slate-900 dark:text-white">Frontend Development</p>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Beautiful UI, component-driven builds, and accessibility-first design.</p>
+            </div>
+            <div class="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10">
+              <p class="text-sm font-semibold text-slate-900 dark:text-white">Database-Backed Systems</p>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">CRUD apps, dashboards, and workflows powered by SQL and APIs.</p>
+            </div>
+            <div class="rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10">
+              <p class="text-sm font-semibold text-slate-900 dark:text-white">Portfolio / Landing Pages</p>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">High-converting pages for personal brands and small businesses.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" class="scroll-mt-24 border-t border-slate-200/70 dark:border-white/10">
+        <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-16">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 class="text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">Contact</h2>
+              <p class="mt-2 text-slate-600 dark:text-slate-300">Let's talk about your project or opportunity.</p>
+            </div>
+          </div>
+
+          <div class="mt-8 grid gap-6 lg:grid-cols-2">
+            <!-- Contact details -->
+            <div class="rounded-3xl border border-slate-200/70 bg-white p-6 shadow dark:border-white/10 dark:bg-white/5">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Reach me directly</h3>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Fastest response via email or phone.</p>
+
+              <div class="mt-6 space-y-4">
+                <div class="flex items-start gap-3 rounded-2xl border border-slate-200/70 bg-slate-50 p-4 shadow-sm dark:border-white/10 dark:bg-slate-950/40">
+                  <div class="mt-0.5 text-indigo-600 dark:text-indigo-200" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-2 10H5a2 2 0 01-2-2V8a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Email</p>
+                    <a class="mt-1 block text-sm font-semibold text-slate-900 hover:text-sky-600 transition dark:text-white dark:hover:text-sky-300" href="mailto:johnjpk0111@gmail.com"
+                      >johnjpk0111@gmail.com</a
+                    >
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3 rounded-2xl border border-slate-200/70 bg-slate-50 p-4 shadow-sm dark:border-white/10 dark:bg-slate-950/40">
+                  <div class="mt-0.5 text-sky-600 dark:text-sky-200" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Phone</p>
+                    <a class="mt-1 block text-sm font-semibold text-slate-900 hover:text-sky-600 transition dark:text-white dark:hover:text-sky-300" href="tel:+255686642920"
+                      >0686642920</a
+                    >
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3 rounded-2xl border border-slate-200/70 bg-slate-50 p-4 shadow-sm dark:border-white/10 dark:bg-slate-950/40">
+                  <div class="mt-0.5 text-emerald-600 dark:text-emerald-200" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Location</p>
+                    <p class="mt-1 text-sm font-semibold text-slate-900 dark:text-white">Dar es Salaam, Tanzania</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3 rounded-2xl border border-slate-200/70 bg-slate-50 p-4 shadow-sm dark:border-white/10 dark:bg-slate-950/40">
+                  <div class="mt-0.5 text-emerald-600 dark:text-emerald-200" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.16 5.318 5.477 0 12.057 0c3.188 0 6.19 1.24 8.445 3.492a11.822 11.822 0 0 1 3.495 8.413c-.003 6.627-5.383 12.013-12.013 12.013a12.05 12.05 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.593 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.481 5.195l-.985 3.592 3.781-.99zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.496.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.5-.669-.51-.173-.008-.372-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.876 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">WhatsApp</p>
+                    <a
+                      class="mt-1 block text-sm font-semibold text-slate-900 hover:text-emerald-700 transition dark:text-white dark:hover:text-emerald-300"
+                      href="https://wa.me/255686642920"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >Chat on WhatsApp</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Contact form (UI only) -->
+            <div class="rounded-3xl border border-slate-200/70 bg-white p-6 shadow dark:border-white/10 dark:bg-white/5">
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Send a message</h3>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">This form is UI-only (no backend). You can email me directly above.</p>
+
+              <form id="contactForm" class="mt-6 space-y-4" action="#" method="post">
+                <div>
+                  <label class="text-sm font-medium text-slate-700 dark:text-slate-200" for="name">Full name</label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    autocomplete="name"
+                    placeholder="Your name"
+                    class="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20 dark:border-white/10 dark:bg-slate-950/40 dark:text-white dark:placeholder:text-slate-500"
+                  />
+                </div>
+
+                <div>
+                  <label class="text-sm font-medium text-slate-700 dark:text-slate-200" for="email">Email</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    placeholder="you@example.com"
+                    class="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20 dark:border-white/10 dark:bg-slate-950/40 dark:text-white dark:placeholder:text-slate-500"
+                  />
+                </div>
+
+                <div>
+                  <label class="text-sm font-medium text-slate-700 dark:text-slate-200" for="message">Message</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows="5"
+                    placeholder="Tell me about your project..."
+                    class="mt-2 w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20 dark:border-white/10 dark:bg-slate-950/40 dark:text-white dark:placeholder:text-slate-500"
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  class="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-indigo-500 to-sky-500 px-5 py-3 text-sm font-semibold text-white shadow-glow hover:opacity-95 transition"
+                >
+                  Send Message
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-200/70 dark:border-white/10">
+      <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="text-sm font-semibold text-slate-900 dark:text-white">John James</p>
+            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">
+              &copy; <span id="year"></span> John James. All rights reserved.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-3">
+            <a
+              href="https://github.com/johnjpk"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+              >GitHub</a
+            >
+            <a
+              href="https://tz.linkedin.com/in/john-james-3b0441305"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+              >LinkedIn</a
+            >
+            <a
+              href="https://wa.me/255686642920"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+              >WhatsApp</a
+            >
+            <a
+              href="https://www.instagram.com/__john.jpk.00"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+              >Instagram</a
+            >
+          </div>
+        </div>
       </div>
+    </footer>
 
-      <div class="skill-bar">
-        <h5>javascript<span class="p">65%</span></h5>
-        <div class="bar bar3"><span class="fill"></span></div>
-      </div>
+    <script>
+      // Theme toggle (light/dark)
+      function toggleTheme() {
+        const isDark = document.documentElement.classList.toggle("dark");
+        try {
+          localStorage.setItem("theme", isDark ? "dark" : "light");
+        } catch (e) {
+          // Ignore storage errors
+        }
+      }
 
-      <div class="skill-bar">
-        <h5>react <span class="p">55%</span></h5>
-        <div class="bar bar4"><span class="fill"></span></div>
-      </div>
-       
-      
+      const themeToggle = document.getElementById("themeToggle");
+      const themeToggleMobile = document.getElementById("themeToggleMobile");
+      if (themeToggle) themeToggle.addEventListener("click", toggleTheme);
+      if (themeToggleMobile) themeToggleMobile.addEventListener("click", toggleTheme);
 
-    </div>
+      // Mobile menu toggle + close on navigation
+      const menuButton = document.getElementById("menuButton");
+      const mobileMenu = document.getElementById("mobileMenu");
 
-      
-      
-    </div>
-  </div>
-</section>
+      function setMenuOpen(isOpen) {
+        if (!menuButton || !mobileMenu) return;
+        mobileMenu.classList.toggle("hidden", !isOpen);
+        menuButton.setAttribute("aria-expanded", String(isOpen));
+        menuButton.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+      }
 
+      if (menuButton && mobileMenu) {
+        menuButton.addEventListener("click", () => {
+          const isOpen = menuButton.getAttribute("aria-expanded") === "true";
+          setMenuOpen(!isOpen);
+        });
 
-<!--about section end -->
+        mobileMenu.addEventListener("click", (e) => {
+          const target = e.target;
+          if (target && target.tagName === "A") setMenuOpen(false);
+        });
+      }
 
-
-
-<!--service section start -->
-<section id="service">
-<div class="service">
-   <div class="title">
-     <h2>our service</h2>
-   </div>
-
-   <div class="box">
-    <div></div>
-    <div class="card">
-      <i></i>
-      <h5>web development</h5>
-      <div class="pra">
-        <p>Transforming ideas into engaging websites. Our expert web development team
-           creates responsive, user-friendly, and SEO-optimized sites tailored to
-            your business needs. Let's build your digital presence today!.</p>
-        <p style="text-align: center;">
-          <a class= "button" href="#">read more</a>
-        </p>   
-      </div>
-    </div>
-
-     <div class="card">
-      <i></i>
-      <h5>web Designer</h5>
-      <div class="pra">
-        <p>Crafting visually stunning websites that captivate users.
-           Our web design experts focus on aesthetics, usability, and brand identity
-          to deliver a seamless and memorable experience. Let's bring your vision to life!</p>
-        <p style="text-align: center;">
-          <a class= "button" href="#">read more</a>
-        </p>   
-      </div>
-    </div>
-
-     <div class="card">
-      <i></i>
-      <h5>Font-end development</h5>
-      <div class="pra">
-        <p>"Creating dynamic and interactive user interfaces with cutting-edge technologies.
-           Our front-end development team ensures seamless, responsive, and intuitive designs
-            that enhance user experience and drive engagement across all devices.</p>
-        <p style="text-align: center;">
-          <a class= "button" href="#">read more</a>
-        </p>   
-      </div>
-    </div>
-   </div>
-   <div class="cad-container">
-    <!-- Web Development Card -->
-    <div class="cad">
-      <h3>Web Development</h3>
-      <p>Transforming ideas into engaging websites. Our expert web development team creates responsive, user-friendly, and SEO-optimized sites tailored to your business needs. Let's build your digital presence today!</p>
-    </div>
-    
-    <!-- Web Designer Card -->
-    <div class="cad">
-      <h3>Web Designer</h3>
-      <p>Crafting visually stunning websites that captivate users. Our web design experts focus on aesthetics, usability, and brand identity to deliver a seamless and memorable experience. Let's bring your vision to life!</p>
-    </div>
-  </div>
-  
-</div>
-</section>
-<!--service section end -->
-
-
-<!--contact me-->
-<section id="contact">
-<div class="contact-me">
-  <p>Let Me Get You A Beautfull website.</p>
-    <a class= "button-two" href="https://wa.me/255686642920">Hire Me</a>
-
-</div>
-  
-<!--footer start-->
-<footer>
-  <p>John James</p>
-  <P>
-    you can also check me on social media as john_jpk:<br>Here are my social media accounts:
-  </P>
-    <div class="social">
-    <a href="https://wa.me/255686642920"><svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50" width="50px" height="50px"><path d="M 25 2 C 12.309534 2 2 12.309534 2 25 C 2 29.079097 3.1186875 32.88588 4.984375 36.208984 L 2.0371094 46.730469 A 1.0001 1.0001 0 0 0 3.2402344 47.970703 L 14.210938 45.251953 C 17.434629 46.972929 21.092591 48 25 48 C 37.690466 48 48 37.690466 48 25 C 48 12.309534 37.690466 2 25 2 z M 25 4 C 36.609534 4 46 13.390466 46 25 C 46 36.609534 36.609534 46 25 46 C 21.278025 46 17.792121 45.029635 14.761719 43.333984 A 1.0001 1.0001 0 0 0 14.033203 43.236328 L 4.4257812 45.617188 L 7.0019531 36.425781 A 1.0001 1.0001 0 0 0 6.9023438 35.646484 C 5.0606869 32.523592 4 28.890107 4 25 C 4 13.390466 13.390466 4 25 4 z M 16.642578 13 C 16.001539 13 15.086045 13.23849 14.333984 14.048828 C 13.882268 14.535548 12 16.369511 12 19.59375 C 12 22.955271 14.331391 25.855848 14.613281 26.228516 L 14.615234 26.228516 L 14.615234 26.230469 C 14.588494 26.195329 14.973031 26.752191 15.486328 27.419922 C 15.999626 28.087653 16.717405 28.96464 17.619141 29.914062 C 19.422612 31.812909 21.958282 34.007419 25.105469 35.349609 C 26.554789 35.966779 27.698179 36.339417 28.564453 36.611328 C 30.169845 37.115426 31.632073 37.038799 32.730469 36.876953 C 33.55263 36.755876 34.456878 36.361114 35.351562 35.794922 C 36.246248 35.22873 37.12309 34.524722 37.509766 33.455078 C 37.786772 32.688244 37.927591 31.979598 37.978516 31.396484 C 38.003976 31.104927 38.007211 30.847602 37.988281 30.609375 C 37.969311 30.371148 37.989581 30.188664 37.767578 29.824219 C 37.302009 29.059804 36.774753 29.039853 36.224609 28.767578 C 35.918939 28.616297 35.048661 28.191329 34.175781 27.775391 C 33.303883 27.35992 32.54892 26.991953 32.083984 26.826172 C 31.790239 26.720488 31.431556 26.568352 30.914062 26.626953 C 30.396569 26.685553 29.88546 27.058933 29.587891 27.5 C 29.305837 27.918069 28.170387 29.258349 27.824219 29.652344 C 27.819619 29.649544 27.849659 29.663383 27.712891 29.595703 C 27.284761 29.383815 26.761157 29.203652 25.986328 28.794922 C 25.2115 28.386192 24.242255 27.782635 23.181641 26.847656 L 23.181641 26.845703 C 21.603029 25.455949 20.497272 23.711106 20.148438 23.125 C 20.171937 23.09704 20.145643 23.130901 20.195312 23.082031 L 20.197266 23.080078 C 20.553781 22.728924 20.869739 22.309521 21.136719 22.001953 C 21.515257 21.565866 21.68231 21.181437 21.863281 20.822266 C 22.223954 20.10644 22.02313 19.318742 21.814453 18.904297 L 21.814453 18.902344 C 21.828863 18.931014 21.701572 18.650157 21.564453 18.326172 C 21.426943 18.001263 21.251663 17.580039 21.064453 17.130859 C 20.690033 16.232501 20.272027 15.224912 20.023438 14.634766 L 20.023438 14.632812 C 19.730591 13.937684 19.334395 13.436908 18.816406 13.195312 C 18.298417 12.953717 17.840778 13.022402 17.822266 13.021484 L 17.820312 13.021484 C 17.450668 13.004432 17.045038 13 16.642578 13 z M 16.642578 15 C 17.028118 15 17.408214 15.004701 17.726562 15.019531 C 18.054056 15.035851 18.033687 15.037192 17.970703 15.007812 C 17.906713 14.977972 17.993533 14.968282 18.179688 15.410156 C 18.423098 15.98801 18.84317 16.999249 19.21875 17.900391 C 19.40654 18.350961 19.582292 18.773816 19.722656 19.105469 C 19.863021 19.437122 19.939077 19.622295 20.027344 19.798828 L 20.027344 19.800781 L 20.029297 19.802734 C 20.115837 19.973483 20.108185 19.864164 20.078125 19.923828 C 19.867096 20.342656 19.838461 20.445493 19.625 20.691406 C 19.29998 21.065838 18.968453 21.483404 18.792969 21.65625 C 18.639439 21.80707 18.36242 22.042032 18.189453 22.501953 C 18.016221 22.962578 18.097073 23.59457 18.375 24.066406 C 18.745032 24.6946 19.964406 26.679307 21.859375 28.347656 C 23.05276 29.399678 24.164563 30.095933 25.052734 30.564453 C 25.940906 31.032973 26.664301 31.306607 26.826172 31.386719 C 27.210549 31.576953 27.630655 31.72467 28.119141 31.666016 C 28.607627 31.607366 29.02878 31.310979 29.296875 31.007812 L 29.298828 31.005859 C 29.655629 30.601347 30.715848 29.390728 31.224609 28.644531 C 31.246169 28.652131 31.239109 28.646231 31.408203 28.707031 L 31.408203 28.708984 L 31.410156 28.708984 C 31.487356 28.736474 32.454286 29.169267 33.316406 29.580078 C 34.178526 29.990889 35.053561 30.417875 35.337891 30.558594 C 35.748225 30.761674 35.942113 30.893881 35.992188 30.894531 C 35.995572 30.982516 35.998992 31.07786 35.986328 31.222656 C 35.951258 31.624292 35.8439 32.180225 35.628906 32.775391 C 35.523582 33.066746 34.975018 33.667661 34.283203 34.105469 C 33.591388 34.543277 32.749338 34.852514 32.4375 34.898438 C 31.499896 35.036591 30.386672 35.087027 29.164062 34.703125 C 28.316336 34.437036 27.259305 34.092596 25.890625 33.509766 C 23.114812 32.325956 20.755591 30.311513 19.070312 28.537109 C 18.227674 27.649908 17.552562 26.824019 17.072266 26.199219 C 16.592866 25.575584 16.383528 25.251054 16.208984 25.021484 L 16.207031 25.019531 C 15.897202 24.609805 14 21.970851 14 19.59375 C 14 17.077989 15.168497 16.091436 15.800781 15.410156 C 16.132721 15.052495 16.495617 15 16.642578 15 z"/></svg><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256h0z"/></svg></a>
-    <a href="https://www.instagram.com/__john.jpk.00/"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M194.4 211.7a53.3 53.3 0 1 0 59.3 88.7 53.3 53.3 0 1 0 -59.3-88.7zm142.3-68.4c-5.2-5.2-11.5-9.3-18.4-12c-18.1-7.1-57.6-6.8-83.1-6.5c-4.1 0-7.9 .1-11.2 .1c-3.3 0-7.2 0-11.4-.1c-25.5-.3-64.8-.7-82.9 6.5c-6.9 2.7-13.1 6.8-18.4 12s-9.3 11.5-12 18.4c-7.1 18.1-6.7 57.7-6.5 83.2c0 4.1 .1 7.9 .1 11.1s0 7-.1 11.1c-.2 25.5-.6 65.1 6.5 83.2c2.7 6.9 6.8 13.1 12 18.4s11.5 9.3 18.4 12c18.1 7.1 57.6 6.8 83.1 6.5c4.1 0 7.9-.1 11.2-.1c3.3 0 7.2 0 11.4 .1c25.5 .3 64.8 .7 82.9-6.5c6.9-2.7 13.1-6.8 18.4-12s9.3-11.5 12-18.4c7.2-18 6.8-57.4 6.5-83c0-4.2-.1-8.1-.1-11.4s0-7.1 .1-11.4c.3-25.5 .7-64.9-6.5-83l0 0c-2.7-6.9-6.8-13.1-12-18.4zm-67.1 44.5A82 82 0 1 1 178.4 324.2a82 82 0 1 1 91.1-136.4zm29.2-1.3c-3.1-2.1-5.6-5.1-7.1-8.6s-1.8-7.3-1.1-11.1s2.6-7.1 5.2-9.8s6.1-4.5 9.8-5.2s7.6-.4 11.1 1.1s6.5 3.9 8.6 7s3.2 6.8 3.2 10.6c0 2.5-.5 5-1.4 7.3s-2.4 4.4-4.1 6.2s-3.9 3.2-6.2 4.2s-4.8 1.5-7.3 1.5l0 0c-3.8 0-7.5-1.1-10.6-3.2zM448 96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96zM357 389c-18.7 18.7-41.4 24.6-67 25.9c-26.4 1.5-105.6 1.5-132 0c-25.6-1.3-48.3-7.2-67-25.9s-24.6-41.4-25.8-67c-1.5-26.4-1.5-105.6 0-132c1.3-25.6 7.1-48.3 25.8-67s41.5-24.6 67-25.8c26.4-1.5 105.6-1.5 132 0c25.6 1.3 48.3 7.1 67 25.8s24.6 41.4 25.8 67c1.5 26.3 1.5 105.4 0 131.9c-1.3 25.6-7.1 48.3-25.8 67z"/></svg></a>
-    <a href="https://twitter.com/@johnjpk0111"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm297.1 84L257.3 234.6 379.4 396H283.8L209 298.1 123.3 396H75.8l111-126.9L69.7 116h98l67.7 89.5L313.6 116h47.5zM323.3 367.6L153.4 142.9H125.1L296.9 367.6h26.3z"/></svg></a>
-  </div>
-  <p class="end">&#169;2024 John James. All rights reserved.</p>
-</footer>
-</section>
-  
-
-
-
-   <!--javascript link-->
-   <script src="app.js"></script>
-   
-</body>
+      // Prevent UI-only form from reloading the page
+      const contactForm = document.getElementById("contactForm");
+      if (contactForm) {
+        contactForm.addEventListener("submit", (e) => e.preventDefault());
+      }
+      // Current year in footer
+      const yearEl = document.getElementById("year");
+      if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+    </script>
+  </body>
 </html>
+
+
+
+
+
