@@ -33,9 +33,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       // Tailwind Play CDN config
-      // Note: the Play CDN initializes `window.tailwind`, so set config after loading it.
-      window.tailwind = window.tailwind || {};
-      window.tailwind.config = {
+      tailwind.config = {
         darkMode: "class",
         theme: {
           extend: {
@@ -54,9 +52,25 @@
         outline-offset: 3px;
       }
 
+      /* Hide scrollbar in project preview carousel (still scrollable) */
+      #previewCarousel {
+        -ms-overflow-style: none; /* IE/Edge (legacy) */
+        scrollbar-width: none; /* Firefox */
+      }
+
+      #previewCarousel::-webkit-scrollbar {
+        display: none; /* Chrome/Safari */
+      }
+
       @media (prefers-reduced-motion: reduce) {
         html.scroll-smooth {
           scroll-behavior: auto;
+        }
+
+        #previewModal,
+        #previewModal [data-preview-overlay],
+        #previewModal [data-preview-panel] {
+          transition-duration: 0.01ms !important;
         }
       }
     </style>
@@ -424,11 +438,13 @@
             <!-- Project 1 -->
             <article class="group rounded-3xl border border-slate-200/70 bg-white p-6 shadow-sm hover:bg-slate-50 transition dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10">
               <div class="aspect-[16/9] overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 dark:border-white/10 dark:bg-slate-950/40">
-                <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-indigo-500/20 to-sky-500/20 dark:from-indigo-500/15 dark:to-sky-500/15">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-slate-700 dark:text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10M4 18h14" />
-                  </svg>
-                </div>
+                <img
+                  src="assets/project-student.png"
+                  alt="Student Management System preview"
+                  class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
               <div class="mt-5 flex items-start justify-between gap-3">
                 <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Student Management System</h3>
@@ -490,13 +506,16 @@
                 <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-300">JavaScript</span>
               </div>
               <div class="mt-6 flex flex-wrap gap-3">
-                <a
-                  href="https://example.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
+                  data-preview-button
+                  data-preview-key="business"
+                  aria-haspopup="dialog"
+                  aria-controls="previewModal"
                   class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
-                  >Live Demo</a
                 >
+                  Preview
+                </button>
                 <a
                   href="https://github.com/johnjpk"
                   target="_blank"
@@ -535,13 +554,16 @@
                 <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 dark:border-white/10 dark:bg-slate-950/40 dark:text-slate-300">UI Design</span>
               </div>
               <div class="mt-6 flex flex-wrap gap-3">
-                <a
-                  href="https://example.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
+                  data-preview-button
+                  data-preview-key="inventory"
+                  aria-haspopup="dialog"
+                  aria-controls="previewModal"
                   class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 transition dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100"
-                  >Live Demo</a
                 >
+                  Preview
+                </button>
                 <a
                   href="https://github.com/johnjpk"
                   target="_blank"
@@ -718,6 +740,164 @@
       </section>
     </main>
 
+    <!-- Project Preview Modal (UI only) -->
+    <div
+      id="previewModal"
+      class="fixed inset-0 z-[80] hidden opacity-0 transition-opacity duration-300 ease-out"
+      aria-hidden="true"
+    >
+      <div
+        class="absolute inset-0 bg-slate-950/70 backdrop-blur-sm opacity-0 transition-opacity duration-300 ease-out"
+        data-preview-overlay
+        aria-hidden="true"
+      ></div>
+      <div class="relative mx-auto flex h-full max-w-5xl items-center justify-center px-4 py-10 sm:px-6">
+        <div
+          data-preview-panel
+          class="w-full overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl opacity-0 translate-y-2 scale-95 transition-all duration-300 ease-out dark:border-white/10 dark:bg-slate-950"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="previewTitle"
+        >
+          <div
+            class="flex items-start justify-between gap-4 border-b border-slate-200/70 bg-white/70 px-5 py-4 backdrop-blur dark:border-white/10 dark:bg-slate-950/70 sm:px-6"
+          >
+            <div>
+              <p class="text-xs font-semibold tracking-widest text-slate-500 dark:text-slate-400">PREVIEW</p>
+              <h3 id="previewTitle" class="mt-1 text-lg font-semibold text-slate-900 dark:text-white">
+                Project Preview
+              </h3>
+            </div>
+            <button
+              id="previewClose"
+              type="button"
+              class="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200/60 bg-white/60 text-slate-700 hover:bg-slate-100/70 transition dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10"
+              aria-label="Close preview"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path
+                  fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="grid gap-6 p-5 sm:p-6 lg:grid-cols-5">
+            <div class="lg:col-span-3">
+              <div class="relative overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-white/10 dark:bg-slate-950/40">
+                <!-- Simple browser mockup frame -->
+                <div class="flex items-center justify-between gap-3 border-b border-slate-200/70 bg-slate-50 px-4 py-2 text-xs text-slate-500 dark:border-white/10 dark:bg-slate-950/60 dark:text-slate-400">
+                  <div class="flex items-center gap-1.5" aria-hidden="true">
+                    <span class="h-2.5 w-2.5 rounded-full bg-rose-400"></span>
+                    <span class="h-2.5 w-2.5 rounded-full bg-amber-400"></span>
+                    <span class="h-2.5 w-2.5 rounded-full bg-emerald-400"></span>
+                  </div>
+                  <p id="previewUrl" class="truncate font-medium">Preview</p>
+                  <span class="w-10" aria-hidden="true"></span>
+                </div>
+
+                <!-- Vertical screenshot slider -->
+                <div
+                  id="previewCarousel"
+                  class="h-[50vh] overflow-y-auto overscroll-contain scroll-smooth snap-y snap-mandatory bg-slate-100 dark:bg-slate-950/40 sm:h-[56vh] lg:h-[60vh]"
+                  tabindex="0"
+                  aria-label="Project screenshots"
+                >
+                  <!-- Slides injected via JavaScript -->
+                </div>
+
+                <!-- Slider controls -->
+                <div class="pointer-events-none absolute inset-0">
+                  <button
+                    id="previewPrev"
+                    type="button"
+                    class="pointer-events-auto absolute right-3 top-14 inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200/70 bg-white/70 text-slate-700 shadow-sm backdrop-blur hover:bg-white transition disabled:opacity-40 dark:border-white/10 dark:bg-slate-950/60 dark:text-slate-200 dark:hover:bg-slate-950"
+                    aria-label="Previous screenshot"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l5 5a1 1 0 11-1.414 1.414L11 6.414V17a1 1 0 11-2 0V6.414L5.707 9.707A1 1 0 114.293 8.293l5-5A1 1 0 0110 3z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+
+                  <button
+                    id="previewNext"
+                    type="button"
+                    class="pointer-events-auto absolute bottom-3 right-3 inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200/70 bg-white/70 text-slate-700 shadow-sm backdrop-blur hover:bg-white transition disabled:opacity-40 dark:border-white/10 dark:bg-slate-950/60 dark:text-slate-200 dark:hover:bg-slate-950"
+                    aria-label="Next screenshot"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M10 17a1 1 0 01-.707-.293l-5-5a1 1 0 011.414-1.414L9 13.586V3a1 1 0 112 0v10.586l3.293-3.293a1 1 0 111.414 1.414l-5 5A1 1 0 0110 17z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+
+                  <div
+                    id="previewCounter"
+                    class="pointer-events-none absolute bottom-3 left-3 inline-flex items-center justify-center rounded-full border border-slate-200/70 bg-white/70 px-3 py-1 text-xs font-semibold text-slate-700 backdrop-blur dark:border-white/10 dark:bg-slate-950/60 dark:text-slate-200"
+                    aria-live="polite"
+                  >
+                    0 / 0
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="lg:col-span-2">
+              <div class="max-h-[50vh] overflow-y-auto pr-1 sm:max-h-[56vh] lg:max-h-[60vh]">
+                <p class="text-sm font-semibold text-slate-900 dark:text-white">Overview</p>
+                <p id="previewDescription" class="mt-2 text-sm text-slate-600 dark:text-slate-300"></p>
+
+                <!-- Project metadata -->
+                <div class="mt-5 grid gap-3 sm:grid-cols-2">
+                  <div class="rounded-2xl border border-slate-200/70 bg-slate-50 p-4 dark:border-white/10 dark:bg-slate-950/40">
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Role</p>
+                    <p id="previewMetaRole" class="mt-1 text-sm font-semibold text-slate-900 dark:text-white"></p>
+                  </div>
+                  <div class="rounded-2xl border border-slate-200/70 bg-slate-50 p-4 dark:border-white/10 dark:bg-slate-950/40">
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Duration</p>
+                    <p id="previewMetaDuration" class="mt-1 text-sm font-semibold text-slate-900 dark:text-white"></p>
+                  </div>
+                  <div class="rounded-2xl border border-slate-200/70 bg-slate-50 p-4 dark:border-white/10 dark:bg-slate-950/40">
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Type</p>
+                    <p id="previewMetaType" class="mt-1 text-sm font-semibold text-slate-900 dark:text-white"></p>
+                  </div>
+                  <div class="rounded-2xl border border-slate-200/70 bg-slate-50 p-4 dark:border-white/10 dark:bg-slate-950/40">
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Year</p>
+                    <p id="previewMetaYear" class="mt-1 text-sm font-semibold text-slate-900 dark:text-white"></p>
+                  </div>
+                </div>
+
+                <!-- Recruiter-friendly details -->
+                <div class="mt-5 space-y-4">
+                  <div class="rounded-2xl border border-slate-200/70 bg-white p-4 dark:border-white/10 dark:bg-white/5">
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white">Technologies</p>
+                    <ul id="previewTechList" class="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-600 dark:text-slate-300"></ul>
+                  </div>
+
+                  <div class="rounded-2xl border border-slate-200/70 bg-white p-4 dark:border-white/10 dark:bg-white/5">
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white">Features</p>
+                    <ul id="previewFeatureList" class="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-600 dark:text-slate-300"></ul>
+                  </div>
+
+                  <div class="rounded-2xl border border-slate-200/70 bg-white p-4 dark:border-white/10 dark:bg-white/5">
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white">Client results</p>
+                    <ul id="previewResultList" class="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-600 dark:text-slate-300"></ul>
+                  </div>
+
+                  <div class="rounded-2xl border border-slate-200/70 bg-white p-4 dark:border-white/10 dark:bg-white/5">
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white">Responsibilities</p>
+                    <ul
+                      id="previewResponsibilityList"
+                      class="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-600 dark:text-slate-300"
+                    ></ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Footer -->
     <footer class="border-t border-slate-200/70 dark:border-white/10">
       <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6">
@@ -763,6 +943,9 @@
       </div>
     </footer>
 
+    <!-- Tailwind safelist for JS-toggled animation classes -->
+    <div class="hidden opacity-100 translate-y-0 scale-100 transition-transform duration-300 ease-in-out hover:scale-[1.02]"></div>
+
     <script>
       // Theme toggle (light/dark)
       function toggleTheme() {
@@ -778,6 +961,310 @@
       const themeToggleMobile = document.getElementById("themeToggleMobile");
       if (themeToggle) themeToggle.addEventListener("click", toggleTheme);
       if (themeToggleMobile) themeToggleMobile.addEventListener("click", toggleTheme);
+
+      // Project preview modal (screenshots + technical details)
+      const previewModal = document.getElementById("previewModal");
+      const previewPanel = document.querySelector("[data-preview-panel]");
+      const previewOverlay = document.querySelector("[data-preview-overlay]");
+      const previewTitle = document.getElementById("previewTitle");
+      const previewDescription = document.getElementById("previewDescription");
+      const previewClose = document.getElementById("previewClose");
+      const previewButtons = document.querySelectorAll("[data-preview-button]");
+
+      const previewUrl = document.getElementById("previewUrl");
+      const previewCarousel = document.getElementById("previewCarousel");
+      const previewPrev = document.getElementById("previewPrev");
+      const previewNext = document.getElementById("previewNext");
+      const previewCounter = document.getElementById("previewCounter");
+
+      const previewMetaRole = document.getElementById("previewMetaRole");
+      const previewMetaDuration = document.getElementById("previewMetaDuration");
+      const previewMetaType = document.getElementById("previewMetaType");
+      const previewMetaYear = document.getElementById("previewMetaYear");
+
+      const previewTechList = document.getElementById("previewTechList");
+      const previewFeatureList = document.getElementById("previewFeatureList");
+      const previewResultList = document.getElementById("previewResultList");
+      const previewResponsibilityList = document.getElementById("previewResponsibilityList");
+
+      const PROJECT_PREVIEWS = {
+        business: {
+          title: "Business Portfolio Website",
+          urlLabel: "business-website.preview",
+          description:
+            "A fast, responsive marketing website with modern sections, strong typography, and SEO-ready structure.",
+          meta: {
+            role: "Frontend Developer",
+            duration: "2 Weeks",
+            type: "Business Website",
+            year: "2025",
+          },
+          technologies: ["HTML", "Tailwind CSS", "JavaScript", "Responsive Design", "Accessibility", "SEO basics"],
+          features: [
+            "Fully responsive layout",
+            "SEO-ready semantic structure",
+            "Fast loading (optimized assets)",
+            "Accessible contrast and focus states",
+            "Sticky navigation + smooth scrolling",
+          ],
+          results: [
+            "Improved performance by optimizing images and reducing layout shifts",
+            "Clear CTA structure to improve user navigation and engagement",
+            "Consistent branding with reusable UI sections and components",
+          ],
+          responsibilities: [
+            "Designed UI layout, spacing, and component styling",
+            "Implemented responsive sections and navigation behavior",
+            "Ensured accessibility (keyboard navigation + focus-visible)",
+            "Optimized assets for faster rendering and better UX",
+          ],
+          images: [
+            { src: "assets/project-business.webp", alt: "Business Portfolio Website screenshot 1" },
+            { src: "assets/project-business-2.webp", alt: "Business Portfolio Website screenshot 2" },
+            { src: "assets/project-business-3.webp", alt: "Business Portfolio Website screenshot 3" },
+          ],
+        },
+        inventory: {
+          title: "Inventory Management Dashboard",
+          urlLabel: "inventory-dashboard.preview",
+          description:
+            "A dashboard for tracking products, stock movement, and sales insights with searchable tables and clean data visual hierarchy.",
+          meta: {
+            role: "Frontend Developer",
+            duration: "3 Weeks",
+            type: "Admin Dashboard",
+            year: "2025",
+          },
+          technologies: ["React", "SQL", "REST APIs", "UI Design", "Responsive Design"],
+          features: [
+            "Dashboard-ready information hierarchy",
+            "Searchable tables and clean UI grouping",
+            "Mobile-friendly layout for quick checks",
+            "Reusable components for scalability",
+          ],
+          results: [
+            "Reduced manual stock tracking through a centralized dashboard view",
+            "Improved clarity with consistent components and spacing",
+            "Faster decision-making using at-a-glance KPI layout",
+          ],
+          responsibilities: [
+            "Designed dashboard UI and reusable components",
+            "Structured tables, filters, and responsive layout behavior",
+            "Worked with API-ready data shapes for integration",
+            "Focused on usability, spacing, and readable visual hierarchy",
+          ],
+          images: [
+            { src: "assets/project-inventory.webp", alt: "Inventory Management Dashboard screenshot 1" },
+            { src: "assets/project-inventory-2.webp", alt: "Inventory Management Dashboard screenshot 2" },
+          ],
+        },
+      };
+
+      let lastPreviewTrigger = null;
+      let currentSlideIndex = 0;
+      let previewCloseTimer = null;
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function setText(el, value) {
+        if (!el) return;
+        el.textContent = value == null ? "" : String(value);
+      }
+
+      function setList(listEl, items) {
+        if (!listEl) return;
+        listEl.innerHTML = "";
+        (items || []).forEach((text) => {
+          const li = document.createElement("li");
+          li.textContent = text;
+          listEl.appendChild(li);
+        });
+      }
+
+      function getSlideCount() {
+        if (!previewCarousel) return 0;
+        return previewCarousel.querySelectorAll("[data-preview-slide]").length;
+      }
+
+      function updateCounterAndNav() {
+        const count = getSlideCount();
+        const current = count ? currentSlideIndex + 1 : 0;
+        setText(previewCounter, `${current} / ${count}`);
+        if (previewPrev) previewPrev.disabled = currentSlideIndex <= 0;
+        if (previewNext) previewNext.disabled = currentSlideIndex >= Math.max(0, count - 1);
+      }
+
+      function scrollToSlide(index, behavior = "smooth") {
+        if (!previewCarousel) return;
+        const count = getSlideCount();
+        if (!count) return;
+        currentSlideIndex = clamp(index, 0, count - 1);
+        const slideHeight = previewCarousel.clientHeight || 1;
+        previewCarousel.scrollTo({ top: currentSlideIndex * slideHeight, behavior });
+        updateCounterAndNav();
+      }
+
+      let carouselRAF = null;
+      function onCarouselScroll() {
+        if (!previewCarousel) return;
+        if (carouselRAF) cancelAnimationFrame(carouselRAF);
+        carouselRAF = requestAnimationFrame(() => {
+          const slideHeight = previewCarousel.clientHeight || 1;
+          const count = getSlideCount();
+          const idx = Math.round(previewCarousel.scrollTop / slideHeight);
+          currentSlideIndex = clamp(idx, 0, Math.max(0, count - 1));
+          updateCounterAndNav();
+        });
+      }
+
+      function renderSlides(images) {
+        if (!previewCarousel) return;
+        previewCarousel.innerHTML = "";
+        (images || []).forEach((img, idx) => {
+          const slide = document.createElement("div");
+          slide.setAttribute("data-preview-slide", "");
+          slide.className =
+            "snap-start h-full w-full overflow-hidden bg-slate-100 dark:bg-slate-950/40";
+
+          const image = document.createElement("img");
+          image.src = img.src;
+          image.alt = img.alt || "Project screenshot";
+          image.loading = idx === 0 ? "eager" : "lazy";
+          image.decoding = "async";
+          image.className = "h-full w-full object-cover transition-transform duration-300 ease-in-out hover:scale-[1.02]";
+
+          slide.appendChild(image);
+          previewCarousel.appendChild(slide);
+        });
+        currentSlideIndex = 0;
+        previewCarousel.scrollTo({ top: 0, behavior: "auto" });
+        updateCounterAndNav();
+      }
+
+      function animateOpen() {
+        if (!previewModal) return;
+        if (previewCloseTimer) {
+          clearTimeout(previewCloseTimer);
+          previewCloseTimer = null;
+        }
+
+        previewModal.classList.remove("hidden");
+        previewModal.setAttribute("aria-hidden", "false");
+        document.body.classList.add("overflow-hidden");
+
+        // Ensure we start from the "closed" visual state
+        previewModal.classList.add("opacity-0");
+        previewModal.classList.remove("opacity-100");
+        if (previewOverlay) {
+          previewOverlay.classList.add("opacity-0");
+          previewOverlay.classList.remove("opacity-100");
+        }
+        if (previewPanel) {
+          previewPanel.classList.add("opacity-0", "translate-y-2", "scale-95");
+          previewPanel.classList.remove("opacity-100", "translate-y-0", "scale-100");
+        }
+
+        requestAnimationFrame(() => {
+          previewModal.classList.remove("opacity-0");
+          previewModal.classList.add("opacity-100");
+          if (previewOverlay) {
+            previewOverlay.classList.remove("opacity-0");
+            previewOverlay.classList.add("opacity-100");
+          }
+          if (previewPanel) {
+            previewPanel.classList.remove("opacity-0", "translate-y-2", "scale-95");
+            previewPanel.classList.add("opacity-100", "translate-y-0", "scale-100");
+          }
+        });
+      }
+
+      function animateClose() {
+        if (!previewModal) return;
+        previewModal.classList.remove("opacity-100");
+        previewModal.classList.add("opacity-0");
+        if (previewOverlay) {
+          previewOverlay.classList.remove("opacity-100");
+          previewOverlay.classList.add("opacity-0");
+        }
+        if (previewPanel) {
+          previewPanel.classList.remove("opacity-100", "translate-y-0", "scale-100");
+          previewPanel.classList.add("opacity-0", "translate-y-2", "scale-95");
+        }
+
+        previewCloseTimer = setTimeout(() => {
+          previewModal.classList.add("hidden");
+          previewModal.setAttribute("aria-hidden", "true");
+          document.body.classList.remove("overflow-hidden");
+          previewCloseTimer = null;
+        }, 220);
+      }
+
+      function openPreviewByKey(key) {
+        if (!previewModal) return;
+        const data = PROJECT_PREVIEWS[key];
+        if (!data) return;
+
+        lastPreviewTrigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+        setText(previewTitle, data.title || "Project Preview");
+        setText(previewDescription, data.description || "");
+        setText(previewUrl, data.urlLabel || "Preview");
+
+        setText(previewMetaRole, data.meta?.role);
+        setText(previewMetaDuration, data.meta?.duration);
+        setText(previewMetaType, data.meta?.type);
+        setText(previewMetaYear, data.meta?.year);
+
+        setList(previewTechList, data.technologies);
+        setList(previewFeatureList, data.features);
+        setList(previewResultList, data.results);
+        setList(previewResponsibilityList, data.responsibilities);
+
+        renderSlides(data.images);
+        animateOpen();
+        if (previewClose) previewClose.focus();
+      }
+
+      function closePreview() {
+        if (!previewModal) return;
+        animateClose();
+        if (lastPreviewTrigger) lastPreviewTrigger.focus();
+        lastPreviewTrigger = null;
+      }
+
+      previewButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const key = btn.getAttribute("data-preview-key");
+          if (!key) return;
+          openPreviewByKey(key);
+        });
+      });
+
+      if (previewPrev) previewPrev.addEventListener("click", () => scrollToSlide(currentSlideIndex - 1));
+      if (previewNext) previewNext.addEventListener("click", () => scrollToSlide(currentSlideIndex + 1));
+      if (previewCarousel) {
+        previewCarousel.addEventListener("scroll", onCarouselScroll);
+        previewCarousel.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowUp") {
+            e.preventDefault();
+            scrollToSlide(currentSlideIndex - 1);
+          }
+          if (e.key === "ArrowDown") {
+            e.preventDefault();
+            scrollToSlide(currentSlideIndex + 1);
+          }
+        });
+      }
+
+      if (previewClose) previewClose.addEventListener("click", closePreview);
+      if (previewOverlay) previewOverlay.addEventListener("click", closePreview);
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key !== "Escape") return;
+        if (previewModal && !previewModal.classList.contains("hidden")) closePreview();
+      });
 
       // Mobile menu toggle + close on navigation
       const menuButton = document.getElementById("menuButton");
